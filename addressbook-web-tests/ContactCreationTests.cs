@@ -45,8 +45,10 @@ namespace WebAddressbookTests
             OpenHomePage();
             Login(new AccountData("admin", "secret"));
             AddNewContact();
-            FillContactForm(new ContactData("Aaa", "Mmm"));
-            //contact.Email = "xxx";
+            ContactData contact = new ContactData("Ivan", "Ivanov");
+            contact.Email = "ii@ru";
+            contact.Address = "First Street";
+            FillContactForm(contact);
             SubmitContactCreation();
             ReturnToHomePage();
         }
@@ -69,8 +71,12 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("lastname")).Click();
             driver.FindElement(By.Name("lastname")).Clear();
             driver.FindElement(By.Name("lastname")).SendKeys(contact.Lastname);
-            //driver.FindElement(By.Name("Email")).Click();
-            //driver.FindElement(By.Name("Email")).SendKeys(contact.Email);
+            driver.FindElement(By.Name("address")).Click();
+            driver.FindElement(By.Name("address")).Clear();
+            driver.FindElement(By.Name("address")).SendKeys(contact.Address);
+            driver.FindElement(By.Name("email")).Click();
+            driver.FindElement(By.Name("email")).Clear();
+            driver.FindElement(By.Name("email")).SendKeys(contact.Email);
         }
 
         private void AddNewContact()
