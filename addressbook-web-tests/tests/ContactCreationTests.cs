@@ -14,17 +14,22 @@ namespace WebAddressbookTests
         [Test]
         public void CreateContactTests()
         {
-            GoToHomePage();
-            Login(new AccountData("admin", "secret"));
-            AddNewContact();
+            
             ContactData contact = new ContactData("Ivan", "Ivanov");
             contact.Email = "ii@ru";
             contact.Address = "First Street";
-            FillContactForm(contact);
-            SubmitContactCreation();
-            ReturnToHomePage();
-        }  
- 
-       
+            app.Contacts.CreateContact(contact);
+        }
+        [Test]
+        public void CreateEmptyContactTests()
+        {
+            
+            ContactData contact = new ContactData("", "");
+            contact.Email = "";
+            contact.Address = "";
+            app.Contacts.CreateContact(contact);
+        }
+
+
     }
 }
