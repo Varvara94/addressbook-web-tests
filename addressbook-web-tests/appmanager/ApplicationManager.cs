@@ -19,10 +19,12 @@ namespace WebAddressbookTests
         protected GroupHelper groupHelper;
         protected ContactHelper contactHelper;
 
+       
+
         public ApplicationManager()
         {
             driver = new FirefoxDriver();
-            baseURL = "http://localhost";
+            baseURL = "http://localhost/addressbook";
 
             loginHelper = new LoginHelper(this);
             navigator = new NavigationHelper(this, baseURL);
@@ -50,14 +52,14 @@ namespace WebAddressbookTests
             get { return contactHelper; }
         }
 
-       
-            public void SetupTest()
+        public void SetupTest()
         {
             driver = new FirefoxDriver();
             baseURL = "http://localhost/addressbook";
-            
+
 
         }
+
         public void Stop()
         {
             try
