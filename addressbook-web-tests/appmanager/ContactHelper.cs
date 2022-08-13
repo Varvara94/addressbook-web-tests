@@ -6,15 +6,36 @@ using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
+using NUnit.Framework;
+using System.Text.RegularExpressions;
+using System.Threading;
+
 
 namespace WebAddressbookTests
 {
-    public class ContactHelper: HelperBase
+    public class ContactHelper : HelperBase
 
     {
 
+        private bool acceptNextAlert = true;
         public ContactHelper(ApplicationManager manager) : base(manager)
+
+
         { }
+
+        public ContactHelper Modify(int v, ContactData newData)
+        {
+            manager.Navigator.GoToHomePage();
+            SelectContact(v);
+            InitContactModification();
+            FillContactForm(newData);
+            SubmitContactModification();
+            manager.Navigator.ReturnToHomePage();
+            return this;
+        }
+
+       
+
         public ContactHelper CreateContact(ContactData contact)
         {
             AddNewContact();
@@ -23,6 +44,15 @@ namespace WebAddressbookTests
             manager.Navigator.ReturnToHomePage();
             return this;
         }
+
+
+        public ContactHelper SelectContact(int index)
+        {
+
+            driver.FindElement(By.XPath("//tr["+ index +"]/td/input")).Click();
+            return this;
+        }
+
         public ContactHelper AddNewContact()
         {
             driver.FindElement(By.LinkText("add new")).Click();
@@ -52,7 +82,50 @@ namespace WebAddressbookTests
             driver.FindElement(By.XPath("//div[@id='content']/form/input[21]")).Click();
             return this;
         }
-        
+        public ContactHelper SubmitContactModification()
+        {
+            driver.FindElement(By.XPath("//div[@id='content']/form/input[22]")).Click();
+            return this;
         }
-    }
 
+        public ContactHelper InitContactModification()
+        {
+            driver.FindElement(By.XPath("//img[@alt='Edit']")).Click();
+            return this;
+        }
+        public ContactHelper RemoveContact()
+        {
+            acceptNextAlert = true;
+            driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
+            Assert.IsTrue(Regex.IsMatch(CloseAlertAndGetItsText(), "^Delete 1 addresses[\\s\\S]$"));
+            return this;
+        }
+
+
+        private string CloseAlertAndGetItsText()
+        {
+            try
+            {
+                IAlert alert = driver.SwitchTo().Alert();
+                string alertText = alert.Text;
+                if (acceptNextAlert)
+                {
+                    alert.Accept();
+                }
+                else
+                {
+                    alert.Dismiss();
+                }
+
+                return alertText;
+            }
+            finally
+            {
+                acceptNextAlert = true;
+            }
+            
+
+        }
+
+    }
+}
