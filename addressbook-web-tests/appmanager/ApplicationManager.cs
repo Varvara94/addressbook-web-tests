@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
+using NUnit.Framework;
 using OpenQA.Selenium.Support.UI;
 
 namespace WebAddressbookTests
@@ -25,7 +26,9 @@ namespace WebAddressbookTests
         private ApplicationManager()
         {
             driver = new FirefoxDriver();
-            baseURL = "http://localhost/addressbook";
+
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+            baseURL = "http://localhost";
 
             loginHelper = new LoginHelper(this);
             navigator = new NavigationHelper(this, baseURL);
@@ -48,6 +51,11 @@ namespace WebAddressbookTests
             if (! app.IsValueCreated)
             {
                 AppDomainManager newInstance = new AppDomainManager();
+                newInstance.Navigator.GoToHomePage();
+                app.Value = new ApplicationManager();
+
+
+
 
             }
             return app.Value; 

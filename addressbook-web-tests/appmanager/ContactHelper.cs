@@ -16,25 +16,23 @@ namespace WebAddressbookTests
     public class ContactHelper : HelperBase
 
     {
-
+        public string baseURL;
         private bool acceptNextAlert = true;
         public ContactHelper(ApplicationManager manager) : base(manager)
 
 
         { }
 
-        public ContactHelper Modify(int v, ContactData newData)
+        public ContactHelper Modify( ContactData newData)
         {
             manager.Navigator.GoToHomePage();
-            SelectContact(v);
-            InitContactModification();
+            InitContactModification(3);
             FillContactForm(newData);
             SubmitContactModification();
             manager.Navigator.ReturnToHomePage();
             return this;
         }
-
-       
+        
 
         public ContactHelper CreateContact(ContactData contact)
         {
@@ -45,13 +43,24 @@ namespace WebAddressbookTests
             return this;
         }
 
-
-        public ContactHelper SelectContact(int index)
+        public ContactHelper IsContactPresent()
         {
-
-            driver.FindElement(By.XPath("//tr["+ index +"]/td/input")).Click();
+            if (driver.Url == baseURL + "/addressbook/"
+                && !IsElementPresent(By.Name("selected[]")))
+            {
+                CreateContact(new ContactData("test", "test"));
+            }
             return this;
         }
+
+        public ContactHelper Remove(int v)
+        {
+            manager.Navigator.GoToHomePage();
+            SelectContact(v);
+            RemoveContact();
+            return this;
+        }
+
 
         public ContactHelper AddNewContact()
         {
@@ -68,6 +77,13 @@ namespace WebAddressbookTests
             return this;
 
         }
+        public ContactHelper SelectContact(int index)
+        {
+
+            driver.FindElement(By.XPath("//tr[" + index + "]/td/input")).Click();
+            return this;
+        }
+
 
         public ContactHelper SubmitContactCreation()
         {
@@ -80,9 +96,9 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper InitContactModification()
+        public ContactHelper InitContactModification(int index)
         {
-            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[3]/td[8]/a/img")).Click();
+            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + index + "]/td[8]/a/img")).Click();
             return this;
         }
         public ContactHelper RemoveContact()

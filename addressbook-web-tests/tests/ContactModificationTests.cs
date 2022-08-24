@@ -13,10 +13,11 @@ namespace WebAddressbookTests
         [Test]
         public void ContactModificationTest()
         {
+            app.Contacts.IsContactPresent();
             ContactData newData = new ContactData("Semen", "Semenov");
             newData.Email = "ss@ru";
             newData.Address = "Forth Street";
-            app.Contacts.Modify(3, newData);
+            app.Contacts.Modify(newData);
         }
     }
 }

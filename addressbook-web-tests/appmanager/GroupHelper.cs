@@ -11,9 +11,10 @@ namespace WebAddressbookTests
 {
     public class GroupHelper: HelperBase
     {
-        
+        public string baseURL;
         public GroupHelper(ApplicationManager manager) : base(manager)
         {
+
         }
 
         public GroupHelper Create(GroupData group)
@@ -27,6 +28,19 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public GroupHelper IsGroupPresent()
+        {
+           if (driver.Url == baseURL + "/addressbook/group.php"
+                    && !IsElementPresent(By.Name("selected[]")))
+            {
+                GroupData group = new GroupData("test");
+                group.Header = "test";
+                group.Footer = "test";
+                Create(group);
+            }
+            return this ;
+
+        }
         public GroupHelper Modify(int p, GroupData newData)
         {
             manager.Navigator.GoToGroupsPage();
