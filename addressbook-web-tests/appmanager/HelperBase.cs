@@ -13,6 +13,7 @@ namespace WebAddressbookTests
     {
         protected ApplicationManager manager;
         protected IWebDriver driver;
+        protected string baseURL;
         
 
         public HelperBase(ApplicationManager manager)
@@ -21,17 +22,11 @@ namespace WebAddressbookTests
             driver = manager.Driver;
 
         }
-
-        public HelperBase(IWebDriver driver)
-        {
-            this.driver = driver;
-        }
        
         public void Type(By locator, string text)
         {
             if (text != null)
             {
-                driver.FindElement(locator).Click();
                 driver.FindElement(locator).Clear();
                 driver.FindElement(locator).SendKeys(text);
             }

@@ -50,9 +50,9 @@ namespace WebAddressbookTests
         {
             if (! app.IsValueCreated)
             {
-                AppDomainManager newInstance = new AppDomainManager();
+                ApplicationManager newInstance = new ApplicationManager();
                 newInstance.Navigator.GoToHomePage();
-                app.Value = new ApplicationManager();
+                app.Value = newInstance;
 
 
 
@@ -80,15 +80,6 @@ namespace WebAddressbookTests
         {
             get { return contactHelper; }
         }
-
-        public void SetupTest()
-        {
-            driver = new FirefoxDriver();
-            baseURL = "http://localhost/addressbook";
-
-
-        }
-
        
         }
        

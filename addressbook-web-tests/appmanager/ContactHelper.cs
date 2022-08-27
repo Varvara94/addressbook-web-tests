@@ -16,7 +16,6 @@ namespace WebAddressbookTests
     public class ContactHelper : HelperBase
 
     {
-        public string baseURL;
         private bool acceptNextAlert = true;
         public ContactHelper(ApplicationManager manager) : base(manager)
 
