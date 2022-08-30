@@ -30,25 +30,31 @@ namespace WebAddressbookTests
             {
                 return true;
             }
-            return Firstname == other.Firstname && Lastname == other.Lastname;
+            return Firstname == other.Firstname;
+            return Lastname == other.Lastname;
         }
         
         public override int GetHashCode()
         {
-            return Firstname.GetHashCode() + Lastname.GetHashCode();
+            return Firstname.GetHashCode();
+            return Lastname.GetHashCode();
         }
-        public override string ToString()
-        {
-            return $"firstname = {Firstname} and Lastname = {Lastname}";
-        }
+     
         public int CompareTo(ContactData other)
         {
             if (object.ReferenceEquals(other, null))
             {
                 return 1;
             }
-            return this.ToString().CompareTo(other.ToString());
+            return Firstname.CompareTo(other.Firstname);
+            return Lastname.CompareTo(other.Lastname);
+
         }
+        public override string ToString()
+        {
+            return $"contact = {lastname} {firstname}";
+        }
+
 
         public string Firstname
         {
