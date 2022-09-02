@@ -30,14 +30,13 @@ namespace WebAddressbookTests
             {
                 return true;
             }
-            return Firstname == other.Firstname;
-            return Lastname == other.Lastname;
+            return Firstname == other.Firstname && Lastname == other.Lastname;
+
         }
         
         public override int GetHashCode()
         {
-            return Firstname.GetHashCode();
-            return Lastname.GetHashCode();
+            return Firstname.GetHashCode() + Lastname.GetHashCode();
         }
      
         public int CompareTo(ContactData other)
@@ -46,13 +45,12 @@ namespace WebAddressbookTests
             {
                 return 1;
             }
-            return Firstname.CompareTo(other.Firstname);
-            return Lastname.CompareTo(other.Lastname);
+            return this.ToString().CompareTo(other.ToString());
 
         }
         public override string ToString()
         {
-            return $"contact = {lastname} {firstname}";
+            return $"firstname = {Firstname} and Lastname = {Lastname}";
         }
 
 

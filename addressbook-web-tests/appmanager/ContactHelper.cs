@@ -39,16 +39,8 @@ namespace WebAddressbookTests
             ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("tr[name ='entry']"));
             foreach (IWebElement element in elements)
             {
-                IList<IWebElement> cells = element.FindElements(By.TagName("td"));
-                contacts.Add(new ContactData(element.Text, null));
-                Console.WriteLine(element.Text);
-                IList<IWebElement> lastnames = element.FindElements(By.CssSelector("td:nth-child(2)"));
-                IList<IWebElement> firstnames = element.FindElements(By.CssSelector("td:nth-child(3)"));
-                foreach (IWebElement lastname in lastnames) foreach (IWebElement firstname in firstnames)
-                    {
-                        contacts.Add(new ContactData(firstname.Text, lastname.Text));
-                    }
-
+                var td = element.FindElements(By.CssSelector("td"));
+                contacts.Add(new ContactData(td[2].Text, td[1].Text));
             }
             return contacts;
         }
@@ -74,7 +66,6 @@ namespace WebAddressbookTests
 
         public ContactHelper Remove(int v)
         {
-            manager.Navigator.GoToHomePage();
             SelectContact(v);
             RemoveContact();
             return this;
@@ -99,7 +90,7 @@ namespace WebAddressbookTests
         public ContactHelper SelectContact(int index)
         {
 
-            driver.FindElement(By.XPath("//tr[" + (index+1)+ "]/td/input")).Click();
+            driver.FindElement(By.XPath("//tr[" + (index+2) + "]/td/input")).Click();
             return this;
         }
 
@@ -115,9 +106,15 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public ContactHelper InitContactModification()
+        {
+            driver.FindElement(By.Name("edit")).Click();
+            return this;
+        }
+
         public ContactHelper InitContactModification(int index)
         {
-            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + index + "]/td[8]/a/img")).Click();
+            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + (index + 2) + "]/td[8]/a/img")).Click();
             return this;
         }
         public ContactHelper RemoveContact()
