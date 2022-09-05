@@ -8,16 +8,11 @@ namespace WebAddressbookTests
 {
     public class ContactData: IEquatable<ContactData>, IComparable<ContactData>
     {
-        private string firstname;
-        private string lastname;
-        private string email = "";
-        private string address = "";
-
         public ContactData(string firstname, string lastname)
         {
-            this.firstname = firstname;
-            this.lastname = lastname;
-
+            Firstname = firstname;
+            Lastname = lastname;
+            
         }
 
         public bool Equals(ContactData other)
@@ -36,7 +31,7 @@ namespace WebAddressbookTests
         
         public override int GetHashCode()
         {
-            return Firstname.GetHashCode() + Lastname.GetHashCode();
+            return Firstname.GetHashCode() & Lastname.GetHashCode();
         }
      
         public int CompareTo(ContactData other)
@@ -45,38 +40,37 @@ namespace WebAddressbookTests
             {
                 return 1;
             }
-            return this.ToString().CompareTo(other.ToString());
+            if (this.Firstname != other.Firstname)
+            {
+                return Firstname.CompareTo(other.Firstname);
+            }
+            if (this.Lastname != other.Lastname)
+            {
+                return Lastname.CompareTo(other.Lastname);
+            }
+            return Lastname.CompareTo(other.Lastname) & Firstname.CompareTo(other.Firstname);
+            
 
         }
         public override string ToString()
         {
-            return $"firstname = {Firstname} and Lastname = {Lastname}";
+            return $"contact = {Lastname} {Firstname}";
         }
 
 
-        public string Firstname
-        {
-            get { return firstname; }
-            set { firstname = value; }
-        }
+        public string Firstname { get; set; }
 
 
-        public string Lastname
-        {
-            get { return lastname; }
-            set { lastname = value; }
-        }
 
-        public string Email
-        {
-            get { return email; }
-            set { email = value; }
-        }
-        public string Address
-        {
-            get { return address; }
-            set { address = value; }
-        }
+        public string Lastname { get; set; }
+     
+
+        public string Email { get; set; }
+       
+        public string Address { get; set; }
+
+        public string Id { get; set; }
+      
     }
 }
 
