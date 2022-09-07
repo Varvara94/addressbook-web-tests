@@ -112,7 +112,6 @@ namespace WebAddressbookTests
         public GroupHelper ReternToGroupsPage()
         {
             driver.FindElement(By.LinkText("group page")).Click();
-            driver.FindElement(By.LinkText("Logout")).Click();
             return this;
         }
         public GroupHelper SelectGroup(int index)
