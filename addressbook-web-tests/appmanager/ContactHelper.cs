@@ -35,6 +35,26 @@ namespace WebAddressbookTests
         }
 
         private List<ContactData> contactCache = null;
+
+
+       
+
+        public ContactHelper DetailContact(int index)
+        {
+            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[2]/td[7]/a/img")).Click();
+            return this;
+        }
+
+       
+
+        public ContactHelper ContactDetailsProperties (int index)
+        {
+            driver.FindElements(By.Name("entry"))[index].FindElements(By.TagName("td"))[6]
+                .FindElement(By.TagName("a")).Click();
+            return this;
+        }
+           
+
         public List<ContactData> GetContactList()
         {
             if (contactCache == null)
@@ -140,6 +160,14 @@ namespace WebAddressbookTests
                 .FindElement(By.TagName("a")).Click();
         }
 
+        public int GetNumberOfSearchResults()
+        {
+            manager.Navigator.GoToHomePage();
+            string text = driver.FindElement(By.TagName("label")).Text;
+            Match m = new Regex(@"\d+").Match(text);
+            return Int32.Parse(m.Value);
+        }
+
        
         public ContactHelper RemoveContact()
         {
@@ -190,8 +218,9 @@ namespace WebAddressbookTests
             return new ContactData(firstName, lastName)
             {
                 Address = address,
-                AllPhones = allPhones,
-                AllEmails = allEmails
+                AllEmails = allEmails,
+                AllPhones = allPhones
+                
             };
         }
 
@@ -213,14 +242,33 @@ namespace WebAddressbookTests
 
             return new ContactData(firstName, lastName)
             {
-                Address = address, 
-                Email = email,
-                Email2 = email2,
-                Email3 = email3,
+                Firstname = firstName,
+                Lastname = lastName,
+                Address = address,
                 HomePhone = homePhone,
                 MobilePhone = mobilePhone,
-                WorkPhone = workPhone
+                WorkPhone = workPhone,
+                Email = email,
+                Email2 = email2,
+                Email3 = email3
+                
             };
+
+            }
+        public ContactData GetContactInformationFromDetailsForm(int index)
+        {
+            manager.Navigator.GoToHomePage();
+            DetailContact(0);
+            string data = GetDetailData();
+            return new ContactData(null, null)
+            {
+                View = data
+            };
+
         }
+                private string GetDetailData()
+                {
+                    return driver.FindElement(By.Id("content")).Text;
+                }
     }
 }
