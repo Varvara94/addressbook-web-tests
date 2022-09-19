@@ -179,11 +179,11 @@ namespace WebAddressbookTests
         {
             string phonestr = "";
             if (!String.IsNullOrEmpty(HomePhone))
-                phonestr += "H:" + HomePhone + "\r\n";
+                phonestr += "H: " + HomePhone + "\r\n";
             if (!String.IsNullOrEmpty(MobilePhone))
-                phonestr += "M:" + MobilePhone + "\r\n";
+                phonestr += "M: " + MobilePhone + "\r\n";
             if (!String.IsNullOrEmpty(WorkPhone))
-                phonestr += "W:" + WorkPhone + "\r\n";
+                phonestr += "W: " + WorkPhone + "\r\n";
             if (phonestr != "")
                 return phonestr + "\r\n";
             return phonestr;
