@@ -11,14 +11,23 @@ namespace WebAddressbookTests
     [TestFixture]
     public class ContactCreationTests : AuthTestBase
     { 
-
-        [Test]
-        public void CreateContactTests()
+        public static IEnumerable<ContactData> RandomContactDataProvider()
         {
-            
-            ContactData contact = new ContactData("Ivan", "Ivanov");
-            contact.Email = "ii@ru";
-            contact.Address = "First Street";
+            List<ContactData> contacts = new List<ContactData>();
+            for (int i = 0; i < 5; i++)
+            {
+                contacts.Add(new ContactData(GenerateRandomString(30), GenerateRandomString(30))
+                {
+                });
+            }
+
+
+                return contacts;
+        }
+
+        [Test, TestCaseSource("RandomContactDataProvider")]
+        public void CreateContactTests(ContactData contact)
+        {
 
             List<ContactData> oldContacts = app.Contacts.GetContactList();
 
@@ -32,26 +41,6 @@ namespace WebAddressbookTests
             newContacts.Sort();
             Assert.AreEqual(oldContacts, newContacts);
         }
-        [Test]
-        public void CreateEmptyContactTests()
-        {
-            
-            ContactData contact = new ContactData("", "");
-            contact.Email = "";
-            contact.Address = "";
-
-            List<ContactData> oldContacts = app.Contacts.GetContactList();
-
-            app.Contacts.CreateContact(contact);
-
-            List<ContactData> newContacts = app.Contacts.GetContactList();
-            oldContacts.Add(contact);
-            Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());
-            oldContacts.Sort();
-            newContacts.Sort();
-            Assert.AreEqual(oldContacts, newContacts);
-        }
-
-
+       
     }
 }
