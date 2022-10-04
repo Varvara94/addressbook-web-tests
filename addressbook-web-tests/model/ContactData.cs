@@ -9,7 +9,7 @@ using LinqToDB.Mapping;
 namespace WebAddressbookTests
 {
     [Table(Name = "addressbook")]
-    public class ContactData: IEquatable<ContactData>, IComparable<ContactData>
+    public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
         public string allPhones;
         public string allEmails;
@@ -24,7 +24,7 @@ namespace WebAddressbookTests
         {
             Firstname = firstname;
             Lastname = lastname;
-            
+
         }
 
         public bool Equals(ContactData other)
@@ -40,12 +40,12 @@ namespace WebAddressbookTests
             return Firstname == other.Firstname && Lastname == other.Lastname;
 
         }
-        
+
         public override int GetHashCode()
         {
             return Firstname.GetHashCode() & Lastname.GetHashCode();
         }
-     
+
         public int CompareTo(ContactData other)
         {
             if (object.ReferenceEquals(other, null))
@@ -61,7 +61,7 @@ namespace WebAddressbookTests
                 return Lastname.CompareTo(other.Lastname);
             }
             return Lastname.CompareTo(other.Lastname) & Firstname.CompareTo(other.Firstname);
-            
+
 
         }
         public override string ToString()
@@ -96,19 +96,24 @@ namespace WebAddressbookTests
         [Column(Name = "work")]
         public string WorkPhone { get; set; }
 
-        [Column(Name = "id"), PrimaryKey, Identity]
+        [Column(Name = "id"), PrimaryKey]
         public string Id { get; set; }
 
         public static List<ContactData> GetAll()
         {
             using (AddressBookDB db = new AddressBookDB())
             {
-                return (from c in db.Contacts select c).ToList();
+                return (from c in db.Contacts.Where(x => x.Deprecated == "0000-00-00 00:00:00") select c).ToList();
             }
         }
-          
-        public string AllPhones { 
-            get { 
+
+        [Column(Name = "deprecated")]
+        public string Deprecated { get; set; }
+
+        public string AllPhones
+        {
+            get
+            {
                 if (allPhones != null)
                 {
                     return allPhones;
@@ -117,10 +122,11 @@ namespace WebAddressbookTests
                 {
                     return (CleanUp(HomePhone) + CleanUp(MobilePhone) + CleanUp(WorkPhone)).Trim();
                 }
-            } 
-            set {
+            }
+            set
+            {
                 allPhones = value;
-            } 
+            }
         }
         public string AllEmails
         {
@@ -134,7 +140,7 @@ namespace WebAddressbookTests
                 {
                     return (CleanEmail(Email) + CleanEmail(Email2) + CleanEmail(Email3)).Trim();
                 }
-              
+
             }
             set
             {
@@ -142,7 +148,7 @@ namespace WebAddressbookTests
             }
         }
 
-        public string CleanEmail (string email)
+        public string CleanEmail(string email)
         {
             if (email == null || email == "")
             {
@@ -154,15 +160,15 @@ namespace WebAddressbookTests
 
         public string CleanUp(string phone)
         {
-            if (phone == null || phone =="")
+            if (phone == null || phone == "")
             {
                 return "";
             }
-            return Regex.Replace(phone, "[ -()]", "")  + "\r\n";
+            return Regex.Replace(phone, "[ -()]", "") + "\r\n";
         }
 
-        
-      
+
+
         public string View
         {
             get
@@ -176,13 +182,13 @@ namespace WebAddressbookTests
                     return (NameBlock() + PhoneBlock() + EmailBlock()).Trim();
                 }
             }
-                set
+            set
             {
                 view = value;
             }
 
-                
-            }
+
+        }
 
         private string NameBlock()
         {
@@ -221,7 +227,7 @@ namespace WebAddressbookTests
         private string EmailBlock()
         {
             string emailstr = "";
-            if (!String.IsNullOrEmpty (Email))
+            if (!String.IsNullOrEmpty(Email))
                 emailstr += Email + "\r\n";
             if (!String.IsNullOrEmpty(Email2))
                 emailstr += Email2 + "\r\n";
@@ -231,8 +237,9 @@ namespace WebAddressbookTests
                 return emailstr + "\r\n";
             return emailstr;
 
-        }
 
+
+        }
     }
 }
 

@@ -13,7 +13,7 @@ namespace WebAddressbookTests
         [Test]
         public void ContactRemovalTest()
         {
-            app.Contacts.IsContactPresent();
+            app.Contacts.CreateContactIfElementNotPresent();
 
             List<ContactData> oldContacts = ContactData.GetAll();
 
@@ -21,7 +21,6 @@ namespace WebAddressbookTests
 
             app.Contacts.Remove(toBeRemoved);
 
-            Assert.AreEqual(oldContacts.Count - 1, app.Contacts.GetContactCount());
 
             List<ContactData> newContacts = ContactData.GetAll();
 

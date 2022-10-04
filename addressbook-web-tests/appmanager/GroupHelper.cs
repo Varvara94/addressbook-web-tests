@@ -17,6 +17,16 @@ namespace WebAddressbookTests
 
         }
 
+        public GroupHelper CreateGroupIfElementNotPresent()
+        {
+            if (driver.Url == baseURL + "/addressbook/group.php"
+                && !IsElementPresent(By.Name("selected[]")))
+            {
+                Create(new GroupData("test"));
+            }
+            return this;
+        }
+
         public GroupHelper Create(GroupData group)
         {
             manager.Navigator.GoToGroupsPage();
