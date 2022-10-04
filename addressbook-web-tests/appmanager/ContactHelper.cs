@@ -22,12 +22,21 @@ namespace WebAddressbookTests
 
         { }
 
-       
 
-        public ContactHelper Modify( int p, ContactData newData)
+        public ContactHelper Modify(ContactData newData)
         {
             manager.Navigator.GoToHomePage();
-            InitContactModification(p);
+            InitContactModification(0);
+            FillContactForm(newData);
+            SubmitContactModification();
+            manager.Navigator.ReturnToHomePage();
+            return this;
+        }
+
+        public ContactHelper Modify(ContactData contact, ContactData newData)
+        {
+            manager.Navigator.GoToHomePage();
+            InitContactModification(contact.Id);
             FillContactForm(newData);
             SubmitContactModification();
             manager.Navigator.ReturnToHomePage();
@@ -107,9 +116,17 @@ namespace WebAddressbookTests
         {
             SelectContact(v);
             RemoveContact();
+            manager.Navigator.ReturnToHomePage();
             return this;
         }
 
+        public ContactHelper Remove(ContactData contact)
+        {
+            SelectContact(contact.Id);
+            RemoveContact();
+            manager.Navigator.ReturnToHomePage();
+            return this;
+        }
 
         public ContactHelper AddNewContact()
         {
@@ -134,8 +151,13 @@ namespace WebAddressbookTests
         }
         public ContactHelper SelectContact(int index)
         {
-
             driver.FindElement(By.XPath("//tr[" + (index + 2) + "]/td/input")).Click();
+            return this;
+        }
+        public ContactHelper SelectContact(string id)
+        {
+
+            driver.FindElement(By.Id(id)).Click();
             return this;
         }
 
@@ -153,11 +175,19 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public void InitContactModification(int index)
+        public ContactHelper InitContactModification(int index)
         {
             driver.FindElements(By.Name("entry"))[index]
                 .FindElements(By.TagName("td"))[7]
                 .FindElement(By.TagName("a")).Click();
+            return this;
+        }
+
+        public ContactHelper InitContactModification(string id)
+        {
+            driver.FindElement(By.XPath("//tr[./td[./input[@name='selected[]' and @value='" + id + "']]]"))
+                .FindElement(By.XPath(".//img[@alt='Edit']")).Click();
+            return this;
         }
 
         public int GetNumberOfSearchResults()
