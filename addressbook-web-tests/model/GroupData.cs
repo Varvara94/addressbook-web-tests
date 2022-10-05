@@ -46,7 +46,11 @@ namespace WebAddressbookTests
             {
                 return 1;
             }
-            return Name.CompareTo(other.Name);
+            if (this.Id != other.Id)
+            {
+                return Id.CompareTo(other.Id);
+            }
+            return 0;
         }
 
         [Column(Name = "group_name")]

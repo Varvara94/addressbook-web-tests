@@ -96,9 +96,11 @@ namespace WebAddressbookTests
             Assert.AreEqual(oldGroups.Count + 1, app.Groups.GetGroupCount());
 
             List<GroupData> newGroups = GroupData.GetAll();
+            newGroups.Sort();
+            group.Id = newGroups[newGroups.Count - 1].Id;
             oldGroups.Add(group);
             oldGroups.Sort();
-            newGroups.Sort();
+            
             Assert.AreEqual(oldGroups, newGroups);
         }
 

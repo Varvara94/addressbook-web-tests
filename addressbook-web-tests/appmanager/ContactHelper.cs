@@ -70,6 +70,16 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public void DeleteContactFromGroup(ContactData contactInGroup2, GroupData group2)
+        {
+            manager.Navigator.GoToHomePage();
+            SelectGroupFilter(group2.Name);
+            SelectContact(contactInGroup2.Id);
+            SubmitContactRemoveFromGroup();
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+                .Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count > 0);
+        }
+
         private ContactHelper SelectGroupToAdd(string name)
         {
             new SelectElement(driver.FindElement(By.Name("to_group"))).SelectByText(name);

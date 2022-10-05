@@ -12,33 +12,54 @@ namespace WebAddressbookTests
         [Test]
         public void TestRemovingContactFromGroup()
         {
-            app.Navigator.GoToGroupsPage();
-            app.Groups.CreateGroupIfElementNotPresent();
-            app.Contacts.CreateContactIfElementNotPresent();
+            List<GroupData> grouplist = GroupData.GetAll();
+            List<ContactData> contactlist = ContactData.GetAll();
+            ContactData newcontact = new ContactData();
+            newcontact.Firstname = "Test1";
+            newcontact.Lastname = "Test2";
+            GroupData newgroup = new GroupData();
+            newgroup.Name = "TestGroup";
 
-            GroupData group = GroupData.GetAll()[0];
-            List<ContactData> oldList = group.GetContacts();
-            ContactData contact;
-            if (oldList.Count > 0)
+            if (grouplist.Count == 0)
             {
-                contact = oldList.First();
+                app.Groups.Create(newgroup);
+
+                if (contactlist.Count == 0)
+                {
+                    app.Contacts.CreateContact(newcontact);
+                    GroupData group = GroupData.GetAll()[0];
+                    List<ContactData> contactInGroup = group.GetContacts();
+                    ContactData contact = ContactData.GetAll().Except(contactInGroup).First();
+                    app.Contacts.AddContactToGroup(contact, group);
+                }
             }
             else
             {
-                contact = ContactData.GetAll().First();
-                app.Contacts.AddContactToGroup(contact, group);
-                oldList = group.GetContacts();
+                if (contactlist.Count == 0)
+                {
+                    app.Contacts.CreateContact(newcontact);
+                }
+                GroupData group = GroupData.GetAll()[0];
+                List<ContactData> contactInGroup = group.GetContacts();
+                if (contactInGroup.Count == 0)
+                {
+                    ContactData contact = ContactData.GetAll().Except(contactInGroup).First();
+                    app.Contacts.AddContactToGroup(contact, group);
+                }
             }
 
-            app.Contacts.RemoveContactFromGroup(contact, group);
+            GroupData group2 = GroupData.GetAll()[0];
+            List<ContactData> oldList = group2.GetContacts();
+            ContactData contactInGroup2 = GroupData.GetAll()[0].GetContacts().First();
 
-            List<ContactData> newList = group.GetContacts();
-            oldList.Remove(contact);
+            app.Contacts.DeleteContactFromGroup(contactInGroup2, group2);
+
+            List<ContactData> newList = group2.GetContacts();
+            oldList.Remove(contactInGroup2);
             newList.Sort();
             oldList.Sort();
 
             Assert.AreEqual(oldList, newList);
-
 
 
         }
