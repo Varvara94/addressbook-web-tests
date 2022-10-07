@@ -13,7 +13,7 @@ namespace WebAddressbookTests
         [Test]
         public void ContactModificationTest()
         {
-            app.Contacts.IsContactPresent();
+            app.Contacts.CreateContactIfElementNotPresent();
             ContactData newData = new ContactData("Test", "Test2");
             newData.Email = "ss@ru";
             newData.Address = "Forth Street";
